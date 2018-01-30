@@ -2,20 +2,24 @@
 
 Some early R&D into using Google Earth Engine to do some calculations and work. The ultimate idea would be to replicate something on the order of www.BayAreaGreenPrint.org which handles 20 polygon layers plus a 30-variable "fishnet" point file.
 
+Specific goals:
+* Create parameters for project management, in regards to how clients would sign up for GEE accounts as their storage is generous yet not unlimited
+* Set up a Linux server with the GEE API for Python
+* Load some datasets into a GEE account
+* Create some prototyping code that will extract a polygon shape from a shapefile, and perform calculations against the GEE datasets
+  * list of distinct area names (city, countty, planning project, fire risk, ...)
+  * "fishnet" calculations as used in BAGP: AVG, SUM, MIN, MAX of values found within the area **without** fetching the list of millions of actual values
 
-### The Server
+
+### R&D Server
 
 For this early R&D, I created a specific Amazon EC2 instance.
 
-The Amazon EC2 instance being used is in the **us-west-2 zone**, and is named "GEE early R&D"
-
-Its IP address is 35.164.16.236
-
-This is intentionally very small and edging into the free tier: a *t2.micro with the default 8 GB disk space*.
-
-OS is Amazon Linux AMI
-
-The chosen security (firewall) configuration is the Default Security Group, allowing SSH from the GIN VPN only. The SSH username is **ec2-user** and the SSH key is the default "GreenInfo SSH key for 2017 Templated Instances"
+* Its IP address is 35.164.16.236
+* This is intentionally very small and edging into the free tier: a *t2.micro with the default 8 GB disk space*.
+* The Amazon EC2 instance being used is in the **us-west-2 zone**, and is named "GEE early R&D"
+* OS is Amazon Linux AMI
+* The chosen security (firewall) configuration is the Default Security Group, allowing SSH from the GIN VPN only. The SSH username is **ec2-user** and the SSH key is the default "GreenInfo SSH key for 2017 Templated Instances"
 
 
 ### GEE API Library & Docs
