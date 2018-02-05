@@ -43,8 +43,11 @@ I went with the manual installation here, as opposed to one of the Docker prospe
   * The new process has you visit a website to issue a token. For a real project, this token would be appropriate to log in P drive or 1Password.
   * As noted in the docs, this will write a file `$HOME/.config/earthengine/credentials` which will cause the Python GEE lib to not require further auth.
     * *How would this translate for a web app?* Would we copy the `.config` folder into content into `~www` so it works with the website?
+* Note that Django's geospatial components which would likely form our middleware, make use of GDAL/OGR and this must be installed on the platform.
+  * Amazon Linux AMI lacks this and requires manual compilation from source. Ubuntu has it in repositories. The GreenInfo AMI 2017 has it already installed.
 
-### Stuff To Figure Out
+
+### Goals and Milestones
 
 - [x] Basic installation and usage of Python API lib
 - [ ] Usage of lib by non-shelll user, e.g. user `www-data` in context of web program e.g. Django
@@ -59,3 +62,13 @@ I went with the manual installation here, as opposed to one of the Docker prospe
   * Need aggregate values, not every single point in the resultset. More important here than in prior tests.
   * MIN, MAX, SUM, AVG are aggregates most commonly used
   * Multiple aggregates in one operation? BAGP fetches **43 aggregates in a single SQL query** and doing this as 43 separate GEE operations may have poor performance
+
+### Running the Demos in Django
+
+Our target platform would be Django, and Django's GeoDjango capabilities for unpacking WKT and reading OGR datasources will allow us to compose semi-realistic use cases using our target library.
+
+
+```
+python manage.py runscript demo0 --traceback
+python manage.py runscript demo1 --traceback
+```
