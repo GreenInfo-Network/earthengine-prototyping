@@ -11,19 +11,17 @@ Specific goals:
   * "fishnet" calculations as used in BAGP: AVG, SUM, MIN, MAX of values found within the area **without** fetching the list of millions of actual values
 
 
-### R&D Server
+### Project Status
 
-For this early R&D, I created a specific Amazon EC2 instance.
+Timeline was January-February 2018.
 
-* The Amazon EC2 instance being used is in the **us-west-2 zone**, and is named "GEE early R&D"
-* Its IP address is 35.164.16.236
-* OS is Amazon Linux AMI
-* The chosen security (firewall) configuration is the Default Security Group, allowing SSH from the GIN VPN only.
-  * The SSH username is **ec2-user**
-  * SSH key is the default "GreenInfo SSH key for 2017 Templated Instances"
-* This is intentionally very small and edging into the free tier: a *t2.micro with the default 8 GB disk space*.
-  * The intent, after all, is to see how thin a Django shell we can use while offloading all geo-stuff onto GEE.
-  * ... While also leaving room for inevitable custom code e.g. user logins for management of "non-geo stuff" such as CMS behaviors.
+After a few weeks of getting to work with it a bit, we will not be using it for calculations such as at BAGP.
+
+* Even simple arithmnetic operations using the `ee.Number` class are "just plain weird" For acreage calculations etc. they are wholly unreliable.
+* Calculations such as intersecting area, are also known to be dependent on having a visible GEE map on the screen and using that map's zoom level. Calculation operations without a map are not supported, and give really bizarre answers e.g. acreage.
+* Queries for data would be done in a batch mode, in which case the operations could each take a few minutes and will be completed some other time. Our programming paradigm would be to submit these tasks, then keep a list of till-outstanding tasks, gather them on some schedule, and eventually note that all 40+ tasks have completed. Once this is noted, then that cronjob may assemble the report and email the client to come pick it up. This would be an undesirable user experience, as well as infeasibly complex programming for our budgets and timelines.
+* Such queries don't support multiple aggregates, so that would be 40+ tasks. Contrast with PostGIS in which we fetch 45 variables in one query, then add 20 more variables from additional datasets.
+* API for querying intersecting features is not defined, and G staff could not clarify. Common need is to find not intersecting area or to generate tiles, but to get a distinct list of intersecting items (e.g. names of policy areas).
 
 
 ### GEE API Library & Docs
